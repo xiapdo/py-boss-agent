@@ -36,7 +36,7 @@ boss_app.py              # FastAPI 后端 —— REST API + WebSocket + 后台�
 boss_firefox.py           # BOSS 直聘搜索 + 详情 XHR + ANTI_DETECT JS 注入 + window.__bossApply 原生投递（Playwright 基类 BossScraper）
 boss_automation.py        # 自动化投递（hybrid: JS原生点击+Playwright兜底）+ 聊天 + 发简历/微信 + 风控冷却退避 + 人类行为模拟 + DB未读兜底 + 回复上限
 boss_replier.py            # AI 回复生成 + 打招呼语 + 简历优化上下文 + 转人工引导（调用 interview/llm_client）
-boss_state.py              # SQLite 数据持久化层（7 张表 + has_unreplied 未读标记 + 线程本地连接）
+boss_state.py              # SQLite 数据持久化层（7 张表 +  未读标记 + 线程本地连接）
 boss_company.py            # 公司画像聚合（岗位聚合 + HR 聚合 + 法人识别 + smart-send）
 boss_geo.py                # 城市/区/规模 BOSS 编码映射（惰性获取 + 6h 缓存 + 静态回退）
 boss_rag.py                # 历史 JD RAG 检索（余弦相似度 + embedding 缓存 + few-shot 上下文构建）

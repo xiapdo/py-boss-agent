@@ -24,6 +24,12 @@ from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
+import os as _os
+_os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", "D:/playwright-browsers")
+
+import nest_asyncio
+nest_asyncio.apply()
+
 from boss_automation import BossAutomation
 from boss_state import (
     add_application,
@@ -167,7 +173,8 @@ async def _run_pw(fn, *args):
     """在 Playwright 专属线程中执行同步操作，清除该线程的 asyncio 状态。"""
 
     def _wrapper():
-        # Playwright sync API 检测到 event loop 会拒绝运行，先清掉
+        # Playwright sync API (包括 1.45+ greenlet 版) 检测到 event loop 会拒绝运行
+        # 当前线程已由 run_in_executor 隔离，再清掉可能残留的 loop 引用
         try:
             asyncio.set_event_loop(None)
         except Exception:
@@ -3055,10 +3062,16 @@ def main():
         try:
 
             def _do_start():
+                try:
+                    asyncio.set_event_loop(None)
+                except Exception:
+                    pass
                 a = BossAutomation(headless=False)
                 a.start()
                 return a
 
+            import nest_asyncio
+            nest_asyncio.apply()
             automation = _playwright_executor.submit(_do_start).result()
             print("✅ 浏览器已启动")
         except Exception as e:

@@ -931,7 +931,7 @@ class BossScraper:
 
         url = "https://www.zhipin.com/web/geek/job?" + "&".join(params)
         try:
-            self.page.goto(url, wait_until="networkidle", timeout=30000)
+            self.page.goto(url, wait_until="load", timeout=15000)
         except Exception:
             pass  # Boss 可能先跳安全页再跳回来导致 interrupted，忽略
 
